@@ -4,6 +4,4 @@ export {
   createCallerFactory,
   createContext,
   type CreateContextOptions,
-  type User,
 } from './trpc';
-export { type Todo } from '@repo/db';

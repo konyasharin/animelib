@@ -8,7 +8,6 @@ Prisma 7 + PostgreSQL: схема, миграции и единственный 
 ```sh
 cp .env.example .env           # в корне репозитория, вписать облачный Postgres
 pnpm db:push                   # схема → база (или pnpm db:migrate для миграций)
-pnpm db:seed                   # пара задач для примера
 ```
 
 ## Переменные окружения
@@ -22,8 +21,7 @@ pnpm db:seed                   # пара задач для примера
 | `DIRECT_DATABASE_URL` | prisma CLI: pgbouncer и другие пулеры не умеют DDL, миграции идут напрямую. Пусто — возьмётся `DATABASE_URL` |
 
 Кто как подтягивает корневой `.env`: `prisma.config.ts` и `next.config.ts` — через
-`dotenv`, Vite-приложения — через `envDir: '../..'`, `api-example` — флагом
-`node --env-file-if-exists`. Обе переменные объявлены в `globalEnv` в
+`dotenv`. Обе переменные объявлены в `globalEnv` в
 `turbo.json`, иначе линт ругнётся `turbo/no-undeclared-env-vars`.
 
 Для локальной разработки без облака в корне есть `docker-compose.yml`

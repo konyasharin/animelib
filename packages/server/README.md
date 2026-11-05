@@ -5,11 +5,11 @@ HTTP-сервера, портов и адаптеров.
 
 ## Почему пакет, а не «всё внутри приложения»
 
-Транспорт (адаптер, порт, CORS, graceful shutdown) — забота приложения
-[`apps/api-example`](../../apps/api-example). А сам роутер вынесен в пакет, потому что:
+Транспорт (адаптер, порт, CORS) — забота приложения: в `apps/web` это route
+handler `/api/trpc`. А сам роутер вынесен в пакет, потому что:
 
-- тип `AppRouter` нужен клиентам (`web-app-example`, `admin-app-example`,
-  `next-app-example`) — так работает end-to-end типизация tRPC без кодогенерации;
+- тип `AppRouter` нужен клиентам — так работает end-to-end типизация tRPC без
+  кодогенерации;
 - один и тот же роутер можно поднять разными адаптерами (standalone, fastify,
   serverless) или дёрнуть напрямую через `createCallerFactory` в тестах;
 - граница «логика ↔ транспорт» не даёт роутерам зависеть от `req`/`res`.
@@ -21,9 +21,8 @@ HTTP-сервера, портов и адаптеров.
 ## Структура
 
 ```
-src/trpc.ts            initTRPC, контекст, publicProcedure / protectedProcedure
+src/trpc.ts            initTRPC, контекст, publicProcedure
 src/routers/health.ts  health.check
-src/routers/todos.ts   CRUD + protected-процедура
 src/router.ts          appRouter, тип AppRouter
 ```
 
@@ -48,7 +47,7 @@ createContext({ authToken: req.headers.authorization });
 import { appRouter, createCallerFactory, createContext } from '@repo/server';
 
 const caller = createCallerFactory(appRouter)(
-  createContext({ authToken: 'demo' }),
+  createContext({}),
 );
-await caller.todos.list();
+await caller.health.check();
 ```

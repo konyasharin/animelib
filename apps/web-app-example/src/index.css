@@ -1,6 +1,0 @@
-@import 'tailwindcss';
-@import '@repo/tailwind-config';
-
-/* внутренние пакеты лежат в node_modules, который Tailwind по умолчанию
-   не сканирует — путь относительно этого файла */
-@source '../node_modules/@repo/components/src';

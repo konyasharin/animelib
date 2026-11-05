@@ -6,8 +6,7 @@ import { Providers } from './providers';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'next-app-example',
-  description: 'Next.js App Router поверх пакетов монорепы',
+  title: 'animelib',
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {

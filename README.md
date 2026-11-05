@@ -1,29 +1,27 @@
-# turborepo-core
+# animelib
 
-Заготовка монорепы: Turborepo + pnpm, четыре приложения-примера и общие пакеты
-(ESLint, TypeScript, Tailwind, компоненты, tRPC-роутеры, Prisma).
+Личное веб-приложение для просмотра аниме. Монорепа: Turborepo + pnpm,
+Next.js-приложение и общие пакеты (ESLint, TypeScript, Tailwind, компоненты,
+tRPC-роутеры, Prisma).
 
 ## Стек
 
 Turborepo 2 · pnpm workspaces · TypeScript 6 · ESLint 10 (flat config) ·
-Prettier · husky · Vite 8 · React 19 · Next.js 16 · Tailwind CSS 4 · tRPC 11 ·
+Prettier · husky · React 19 · Next.js 16 · Tailwind CSS 4 · tRPC 11 ·
 TanStack Query 5 · Zod 4 · Prisma 7 + PostgreSQL
 
 ## Структура
 
 ```
 apps/
-  web-app-example/     Vite + React SPA: все пакеты сразу, tRPC-клиент      :3000
-  admin-app-example/   второе приложение на тех же пакетах, тёмная тема     :3001
-  next-app-example/    Next.js App Router, сам хостит tRPC                  :3002
-  api-example/         Node-сервер: standalone-адаптер для @repo/server     :2022
+  web/                   Next.js App Router, сам хостит tRPC                  :3002
 packages/
-  eslint-config/       пресеты base / react / next / node
-  typescript-config/   пресеты base / react-library / vite-app / nextjs / node
-  tailwind-config/     дизайн-токены Tailwind 4 (theme.css)
-  components/          React-компоненты, стили только Tailwind
-  server/              tRPC: контекст, процедуры, appRouter
-  db/                  Prisma-схема, миграции, клиент
+  components/            React-компоненты, стили только Tailwind
+  db/                    Prisma-схема, миграции, клиент
+  eslint-config/         пресеты base / react / next / node
+  server/                tRPC: контекст, процедуры, appRouter
+  tailwind-config/       дизайн-токены Tailwind 4 (theme.css)
+  typescript-config/     пресеты base / react-library / vite-app / nextjs / node
 ```
 
 ## Старт
@@ -32,8 +30,7 @@ packages/
 pnpm install
 cp .env.example .env   # DATABASE_URL от облачного Postgres
 pnpm db:push           # схема → база
-pnpm db:seed           # демо-данные
-pnpm dev               # все приложения разом
+pnpm dev               # http://localhost:3002
 ```
 
 Без облака поднимается локальный Postgres: `docker compose up -d` и
@@ -46,7 +43,7 @@ pnpm dev               # все приложения разом
 ## Команды
 
 ```sh
-pnpm dev --filter web-app-example
+pnpm dev --filter web
 pnpm lint           # eslint --max-warnings 0 во всех пакетах
 pnpm fix            # eslint --fix
 pnpm check-types    # tsc --noEmit
@@ -77,30 +74,6 @@ Node-API на standalone-адаптере. Пакеты: React-компонен�
 (`turbo/generators/templates/`) и обновляются руками — как и во всех
 plop-генераторах.
 
-## Урезать репозиторий под конкретный проект
-
-```sh
-pnpm pick                                                        # интерактивно
-pnpm pick --apps=web-app-example --rename=web-app-example:web -y # без вопросов
-```
-
-Скрипт спрашивает, какие приложения-примеры оставить и как их назвать
-(Enter — оставить имя как есть), после чего удаляет всё остальное:
-неиспользуемые пакеты (граф зависимостей считается сам), задачи `db:*`,
-`docker-compose.yml`, лишние переменные в `.env.example` и `turbo.json`, блок
-«Структура» в этом README. Если бэкенд не нужен, `web-app-example` и
-`next-app-example` переезжают на облегчённые версии без tRPC —
-`admin-app-example` и `api-example` без него не предлагаются вовсе.
-
-Переименование меняет не только папку и `name` в `package.json`: старое имя
-вычищается из README, конфигов и лок-файла по всему репозиторию.
-
-После работы скрипт удаляет сам себя (`--keep-script` оставит). Флаги:
-`--apps`, `--rename=a:b`, `--no-backend`, `--skip-install`, `--keep-script`,
-`-y`, `-h`.
-README после урезания стоит перечитать: структура и команды поправятся, а
-описания разделов — нет.
-
 ## Как устроены зависимости
 
 Внутренние пакеты **не собираются** — их `exports` указывают прямо на
@@ -109,8 +82,8 @@ README после урезания стоит перечитать: структ
 исходников и артефактов, а `check-types` в пакете — это `tsc --noEmit`.
 
 Слои: `@repo/db` (данные) → `@repo/server` (API-логика) → приложение
-(транспорт и UI). Тип `AppRouter` из `@repo/server` импортируют все три
-фронтенда — это и даёт end-to-end типизацию без кодогенерации.
+(транспорт и UI). Тип `AppRouter` из `@repo/server` импортирует фронтенд —
+это и даёт end-to-end типизацию без кодогенерации.
 
 ## Что добавить в новое приложение
 

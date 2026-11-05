@@ -25,5 +25,3 @@ export const prisma = new Proxy({} as PrismaClient, {
     return typeof value === 'function' ? value.bind(client) : value;
   },
 });
-
-export type { Todo } from '../generated/prisma/client';

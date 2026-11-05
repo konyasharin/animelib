@@ -10,8 +10,7 @@
     "build": {
       "dependsOn": ["^build", "@repo/db#generate"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
-      "env": ["VITE_API_URL", "PORT"]
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },
     "lint": {
       "dependsOn": ["^lint", "@repo/db#generate"]
@@ -26,14 +25,12 @@
     "dev": {
       "cache": false,
       "persistent": true,
-      "dependsOn": ["@repo/db#generate"],
-      "env": ["VITE_API_URL", "PORT"]
+      "dependsOn": ["@repo/db#generate"]
     },
     "start": {
       "cache": false,
       "persistent": true,
-      "dependsOn": ["build"],
-      "env": ["PORT"]
+      "dependsOn": ["build"]
     }
   }
 }
