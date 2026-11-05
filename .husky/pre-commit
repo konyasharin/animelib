@@ -1,0 +1,35 @@
+if [ -t 1 ]; then
+  RED='\033[0;31m'
+  GREEN='\033[0;32m'
+  YELLOW='\033[1;33m'
+  BLUE='\033[0;34m'
+  NC='\033[0m' # No Color
+else
+  RED=''
+  GREEN=''
+  YELLOW=''
+  BLUE=''
+  NC=''
+fi
+
+log() {
+  printf "%b%s%b\n" "$1" "$2" "$NC"
+}
+
+log "$BLUE" "⏳ Running check-types..."
+if ! pnpm run check-types; then
+  log "$RED" "✖ Type check failed! Please fix errors before committing."
+  exit 1
+fi
+
+log "$YELLOW" "🔧 Running fix..."
+pnpm run fix && git add . || log "$YELLOW" "⚠️ Auto-fix completed with warnings"
+
+log "$BLUE" "🔍 Running lint..."
+if ! pnpm run lint; then
+  log "$RED" "✖ Lint errors found! Please fix them before committing."
+  exit 1
+fi
+
+log "$GREEN" "✔ Pre-commit checks passed successfully!"
+log "$GREEN" "🎉 You're ready to commit!"

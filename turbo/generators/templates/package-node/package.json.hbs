@@ -1,0 +1,21 @@
+{
+  "name": "@repo/{{ name }}",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "fix": "eslint . --fix",
+    "check-types": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@types/node": "^24.13.3",
+    "eslint": "^10.8.0",
+    "typescript": "~6.0.2"
+  }
+}

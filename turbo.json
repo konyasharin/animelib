@@ -1,0 +1,39 @@
+{
+  "$schema": "https://turborepo.dev/schema.json",
+  "ui": "tui",
+  "globalEnv": ["NODE_ENV", "DATABASE_URL", "DIRECT_DATABASE_URL"],
+  "tasks": {
+    "generate": {
+      "inputs": ["prisma/**"],
+      "outputs": ["generated/**"]
+    },
+    "build": {
+      "dependsOn": ["^build", "@repo/db#generate"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
+      "env": ["VITE_API_URL", "PORT"]
+    },
+    "lint": {
+      "dependsOn": ["^lint", "@repo/db#generate"]
+    },
+    "fix": {
+      "cache": false,
+      "dependsOn": ["^fix", "@repo/db#generate"]
+    },
+    "check-types": {
+      "dependsOn": ["^check-types", "@repo/db#generate"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["@repo/db#generate"],
+      "env": ["VITE_API_URL", "PORT"]
+    },
+    "start": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["build"],
+      "env": ["PORT"]
+    }
+  }
+}

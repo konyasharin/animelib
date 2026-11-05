@@ -1,0 +1,16 @@
+{{#if withTrpc}}
+import { config } from 'dotenv';
+{{/if}}
+import type { NextConfig } from 'next';
+
+{{#if withTrpc}}
+// Next читает .env только из своей папки — подтягиваем общий из корня
+config({ path: new URL('../../.env', import.meta.url) });
+
+{{/if}}
+const nextConfig: NextConfig = {
+  // внутренние пакеты отдают .ts-исходники, Next должен их скомпилировать
+  transpilePackages: [{{#if withTrpc}}'@repo/components', '@repo/server', '@repo/db'{{else}}'@repo/components'{{/if}}],
+};
+
+export default nextConfig;

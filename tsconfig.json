@@ -1,0 +1,5 @@
+{
+  "extends": "@repo/typescript-config/node.json",
+  "include": ["scripts", "turbo", "eslint.config.mjs"],
+  "exclude": ["scripts/templates", "turbo/generators/templates"]
+}
